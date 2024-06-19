@@ -1,19 +1,23 @@
-FROM adoptopenjdk/openjdk11
+# Stage 1: Build the application
+FROM maven:3.8.5-openjdk-11 AS builder
+WORKDIR /app
+COPY . .
+RUN mvn package
 
-# Expose the application port
-EXPOSE 8080
+# Stage 2: Create the runtime image
+FROM eclipse-temurin/openjdk-17-jre
 
-# Set the application home directory
+# Define environment variables
 ENV APP_HOME /usr/src/app
 
-# Create the application home directory
+# Create directory for the application
 RUN mkdir -p $APP_HOME
 
-# Copy the JAR file(s) from the target directory to the application home directory
-COPY target/*.jar $APP_HOME/
+# Copy the JAR file from the builder stage to the runtime image
+COPY --from=builder /app/target/*.jar $APP_HOME/app.jar
 
 # Set the working directory
 WORKDIR $APP_HOME
 
 # Specify the command to run the application
-CMD ["java", "-jar", "$(ls $APP_HOME/*.jar)"]
+CMD ["java", "-jar", "app.jar"]

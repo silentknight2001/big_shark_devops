@@ -1,36 +1,35 @@
 apiVersion: apps/v1
-kind: Deployment # Kubernetes resource kind we are creating
+kind: Deployment
 metadata:
   name: big-shark-dev-deployment
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app: big-shark-dev
-  replicas: 2 # Number of replicas that will be created for this deployment
   template:
     metadata:
       labels:
         app: big-shark-dev
     spec:
       containers:
-        - name: big-shark-dev
-          image: nayan2001/big-shark-app:latest # Image that will be used to containers in the cluster
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080 # The port that the container is running on in the cluster
-
+      - name: big-shark-app # Ensure the container name follows Kubernetes naming conventions
+        image: nayan2001/big-shark-app:latest # Corrected image name
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
 
 ---
 
-apiVersion: v1 # Kubernetes API version
-kind: Service # Kubernetes resource kind we are creating
-metadata: # Metadata of the resource kind we are creating
-  name: big-shark-dev-ssvc
+apiVersion: v1
+kind: Service
+metadata:
+  name: big-shark-dev-svc # Corrected the service name to match the label selector
 spec:
   selector:
     app: big-shark-dev
   ports:
-    - protocol: "TCP"
-      port: 8080 # The port that the service is running on in the cluster
-      targetPort: 8080 # The port exposed by the service
-  type: LoadBalancer # type of the service.
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: LoadBalancer

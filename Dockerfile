@@ -5,7 +5,7 @@ COPY . .
 RUN mvn package
 
 # Stage 2: Create the runtime image
-FROM eclipse-temurin/openjdk-17-jre
+FROM adoptopenjdk/openjdk11:alpine-jre
 
 # Define environment variables
 ENV APP_HOME /usr/src/app

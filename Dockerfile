@@ -5,7 +5,7 @@ COPY . .
 RUN mvn package
 
 # Stage 2: Create the runtime image (slimmer base image)
-FROM eclipse-temurin/openjdk-11-jre
+FROM eclipse-temurin/openjdk-17-jre
 
 # Copy only the JAR from the build stage
 COPY --from=builder /app/target/*.jar $APP_HOME/

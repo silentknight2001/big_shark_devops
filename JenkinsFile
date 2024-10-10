@@ -67,7 +67,7 @@ pipeline {
         }
            stage('Scan Docker image with Trivy') {
             steps {
-                sh 'trivy image --format table trivy-image-report.html nayan2001/big_shark_app:latest'
+                sh 'trivy image --format table -o trivy-image-report.html nayan2001/big_shark_app:latest'
             }
         }
         stage('Push Docker Image') {

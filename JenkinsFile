@@ -59,7 +59,7 @@ pipeline {
            stage('Build and tag Docker Image') {
             steps {
                 script{
-                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker', url: 'docker.io') {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker', url: 'https://index.docker.io/v1/') {
                        sh 'docker build -t nayan2001/big_shark_app:latest .'
                   }
                 }
